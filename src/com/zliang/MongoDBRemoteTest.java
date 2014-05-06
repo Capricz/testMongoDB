@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -58,6 +60,16 @@ public class MongoDBRemoteTest {
 				System.out.println(dbObject);
 			}*/
 			
+			BasicDBObject query = null;
+			DBCursor cursor = paColl.find(query);
+			while(cursor.hasNext()){
+				DBObject dbObject = cursor.next();
+				List<Object> rowList = convertToList(dbObject);
+			}
+			
+			
+			
+			
 			//query the first line
 			DBObject one = paColl.findOne();
 			Set<String> keySet = one.keySet();
@@ -96,8 +108,6 @@ public class MongoDBRemoteTest {
 			}
 			cursor.close();
 			
-			
-			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} finally{
@@ -125,6 +135,30 @@ public class MongoDBRemoteTest {
 		for (String s : colls) {
 		    System.out.println(s);
 		}*/
+	}
+
+	private static List<Object> convertToList(DBObject dbObject) {
+		List<Object> resultList = new LinkedList<>();
+		Set<String> keySet = dbObject.keySet();
+		int index = 0;
+		for (String key : keySet) {
+			Object object = dbObject.get(key);
+			if(object instanceof ObjectId){
+				resultList.add(index, (ObjectId)object);
+			} else if(object instanceof Date){
+				Date date = (Date) object;
+				resultList.add(index,date);
+			} else if(object instanceof BSONTimestamp){
+				BSONTimestamp time = (BSONTimestamp)object;
+				resultList.add(index, time);
+			}else if(object instanceof BasicDBObject){
+				BasicDBObject dbObj = (BasicDBObject)object;
+				Set<Entry<String,Object>> entrySet = dbObj.entrySet();
+				resultList.add(index, entrySet);
+			}
+			index++;
+		}
+		return resultList;
 	}
 
 }
