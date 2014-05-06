@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/zhojiali/Documents/java Technology/mongoDB/mongo-java-driver-2.9.3.jar" sourcepath="C:/Users/zhojiali/.m2/repository/org/mongodb/mongo-java-driver/2.9.3/mongo-java-driver-2.9.3-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
